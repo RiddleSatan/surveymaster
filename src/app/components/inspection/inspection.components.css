@@ -1,0 +1,151 @@
+/* Main container styling */
+.inspection-main {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #f0f9ff 100%); /* Soft colorful gradient */
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    font-size: 1rem; /* More compact */
+    color: #1e293b;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative blurred shapes for background */
+.inspection-main::before,
+.inspection-main::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    z-index: 0;
+}
+
+.inspection-main::before {
+    width: 300px;
+    height: 300px;
+    top: -80px;
+    left: -80px;
+    background: #93c5fd; /* Light blue */
+}
+
+.inspection-main::after {
+    width: 350px;
+    height: 350px;
+    bottom: -100px;
+    right: -100px;
+    background: #c4b5fd; /* Soft purple */
+}
+
+/* Sub-container */
+.sub-main {
+    width: 100%;
+    max-width: 70rem; /* Smaller max width */
+    background-color: #ffffffcc; /* Slight transparency for modern look */
+    padding: 2rem; 
+    border-radius: 0.75rem;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+    border: 1px solid #dbeafe;
+    position: relative;
+    z-index: 1; /* Keeps content above bg shapes */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sub-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.65rem 1.25rem rgba(0, 0, 0, 0.12);
+}
+
+/* Section spacing */
+.content-section {
+    margin-bottom: 2rem;
+}
+
+.content-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Section title */
+.section-title {
+    font-size: 1.3rem; /* More compact */
+    font-weight: 700;
+    color: #4338ca;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.15rem solid #6366f1;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* Editor styling */
+.editor-instance {
+    border: 0.1rem solid #c7d2fe;
+    border-radius: 0.6rem;
+    min-height: 9.5rem; /* More compact editor */
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+    background: #f9faff; /* Subtle editor bg */
+}
+
+.editor-instance:focus-within {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 0.15rem rgba(99, 102, 241, 0.12);
+}
+
+/* Quill toolbar */
+.editor-instance .ql-toolbar {
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+    background: #eef2ff;
+    border-bottom: 0.1rem solid #c7d2fe;
+    padding: 0.5rem;
+}
+
+/* Quill text area */
+.editor-instance .ql-container {
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+    font-size: 1rem; /* Compact text */
+    color: #374151;
+    line-height: 1.55;
+    padding: 0.7rem;
+}
+
+/* Remove bottom margin for last editor */
+.editor-instance:last-of-type {
+    margin-bottom: 0;
+}
+
+/* --- Add these new rules to your existing CSS file --- */
+
+/* Container for the universal button */
+.global-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+/* Styling for the toggle button */
+.toggle-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #4f46e5; /* Indigo */
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.toggle-btn:hover {
+    background-color: #4338ca; /* Darker Indigo */
+}
+
+/* This existing rule hides the toolbar when the class is applied */
+:host ::ng-deep .editor-instance.toolbar-hidden .ql-toolbar {
+  display: none !important;
+}

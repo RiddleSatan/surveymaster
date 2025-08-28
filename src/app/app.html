@@ -1,25 +1,4 @@
 <div class="main-container">
-  <app-assessment-form></app-assessment-form>
-
-  <button class="toggle-button" (click)="toggleEditorTools()">
-    {{ showEditorTools ? 'Hide Editor Tools' : 'Show Editor Tools' }}
-  </button>
-
-  <app-editor-section
-    title="SURVEY/INSPECTION DETAILS"
-    [(ngModel)]="surveyDetailsContent"
-    [toolsVisible]="showEditorTools">
-  </app-editor-section>
-
-  <app-editor-section
-    title="Notes"
-    [(ngModel)]="notesContent"
-    [toolsVisible]="showEditorTools">
-  </app-editor-section>
-
-  <app-editor-section
-    title="CONCLUDING REMARK"
-    [(ngModel)]="concludingRemarkContent"
-    [toolsVisible]="showEditorTools">
-  </app-editor-section>
+  <app-assessment-form/>
+<app-inspection/>
 </div>

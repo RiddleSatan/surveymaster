@@ -1,0 +1,41 @@
+<div class="inspection-main">
+    <div class="sub-main">
+<div class="global-controls">
+  <button class="toggle-btn"></button>
+ 
+</div>
+
+
+        <div class="content-section inspection">
+            <h1 class="section-title">SURVEY/INSPECTION DETAILS:</h1>
+            <!-- Binding is here -->
+            <quill-editor
+  class="editor-instance"
+
+  [(ngModel)]="inspectionContentOne">  
+</quill-editor>
+
+            <!-- AND HERE -->
+            <quill-editor class="editor-instance" [(ngModel)]="inspectionContentTwo">
+            </quill-editor>
+        </div>
+
+        <div class="content-section">
+           <h1 class="section-title">Notes:</h1>
+           <!-- AND HERE -->
+           <quill-editor class="editor-instance" [(ngModel)]="notesContentOne">
+            </quill-editor>
+            <!-- AND HERE -->
+            <quill-editor class="editor-instance" [(ngModel)]="notesContentTwo">
+            </quill-editor>
+        </div>
+
+        <div class="content-section">
+           <h1 class="section-title">CONCLUDING REMARK:</h1>
+           <!-- AND HERE -->
+            <quill-editor class="editor-instance" [(ngModel)]="remarkContent">
+            </quill-editor>
+        </div>
+        
+    </div>
+</div>
