@@ -7,7 +7,7 @@ import { QuillModule } from 'ngx-quill';
 
 // 1. Re-import the AssessmentFormComponent
 import { AssessmentFormComponent } from './components/assessment-form/assessment-form.component';
-import { Inspection } from "./components/inspection/inspection.component";
+import { InspectionComponent } from "./components/inspection/inspection.component";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { Inspection } from "./components/inspection/inspection.component";
     FormsModule,
     AssessmentFormComponent // 2. Add it back to the imports array
     ,
-    Inspection
+    InspectionComponent
 ],
   templateUrl: './app.html',
   styleUrl: './app.css'

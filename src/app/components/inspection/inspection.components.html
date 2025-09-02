@@ -1,41 +1,1029 @@
-<div class="inspection-main">
-    <div class="sub-main">
-<div class="global-controls">
-  <button class="toggle-btn"></button>
- 
-</div>
+<!-- inspection.component.html -->
+<div class="w-[83%] mx-auto p-6 bg-[#f0fdf4]">
+    <div class="flex flex-col gap-1">
 
-
-        <div class="content-section inspection">
-            <h1 class="section-title">SURVEY/INSPECTION DETAILS:</h1>
-            <!-- Binding is here -->
-            <quill-editor
-  class="editor-instance"
-
-  [(ngModel)]="inspectionContentOne">  
-</quill-editor>
-
-            <!-- AND HERE -->
-            <quill-editor class="editor-instance" [(ngModel)]="inspectionContentTwo">
-            </quill-editor>
-        </div>
-
-        <div class="content-section">
-           <h1 class="section-title">Notes:</h1>
-           <!-- AND HERE -->
-           <quill-editor class="editor-instance" [(ngModel)]="notesContentOne">
-            </quill-editor>
-            <!-- AND HERE -->
-            <quill-editor class="editor-instance" [(ngModel)]="notesContentTwo">
-            </quill-editor>
-        </div>
-
-        <div class="content-section">
-           <h1 class="section-title">CONCLUDING REMARK:</h1>
-           <!-- AND HERE -->
-            <quill-editor class="editor-instance" [(ngModel)]="remarkContent">
-            </quill-editor>
+        <h1 class="text-xl font-bold text-slate-700 mb-3 pb-2 border-b border-slate-200">SURVEY/INSPECTION DETAILS:</h1>
+       <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-lg shadow-slate-200/50">
+            <!-- Toggle Button -->
+            <div class="flex justify-end bg-slate-100/80 px-4 py-2 border-b border-slate-200">
+                <button
+                (click)="toggleToolbar()"
+                class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-200 border border-slate-300 rounded-md transition-all shadow-sm">
+                <span class="material-icons text-base">{{ showToolbar ? 'visibility_off' : 'visibility' }}</span>
+                {{ showToolbar ? 'Hide Toolbar' : 'Show Toolbar' }}
+            </button>
         </div>
         
+        <!-- Toolbar -->
+    <div *ngIf="showToolbar" class="bg-white border-b border-gray-200 p-3">
+      <div class="flex flex-wrap gap-1">
+        
+          <!-- Undo/Redo -->
+          <div class="flex border-r border-gray-200 pr-2 mr-2">
+              <button
+              (click)="executeCommand('undo')"
+              class="p-2 hover:bg-gray-100 rounded transition-colors"
+              title="Undo">
+              <span class="material-icons text-base">undo</span>
+            </button>
+            <button
+            (click)="executeCommand('redo')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+        
+            title="Redo">
+            <span class="material-icons text-base">redo</span>
+          </button>
+        </div>
+
+        <!-- Text Formatting -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('bold')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bold">
+            <span class="material-icons text-base">format_bold</span>
+          </button>
+          <button
+            (click)="executeCommand('italic')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Italic">
+            <span class="material-icons text-base">format_italic</span>
+          </button>
+          <button
+            (click)="executeCommand('underline')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Underline">
+            <span class="material-icons text-base">format_underlined</span>
+          </button>
+          <button
+            (click)="executeCommand('strikeThrough')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Strikethrough">
+            <span class="material-icons text-base">strikethrough_s</span>
+          </button>
+          <button
+            (click)="executeCommand('subscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Subscript">
+            X₂
+          </button>
+          <button
+            (click)="executeCommand('superscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Superscript">
+            X²
+          </button>
+        </div>
+
+        <!-- Text Style -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center">
+          <select
+            (change)="onFormatBlockChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="h5">Heading 5</option>
+            <option value="h6">Heading 6</option>
+            <option value="p">Paragraph</option>
+            <option value="pre">Preformatted</option>
+            <option value="blockquote">Quote</option>
+          </select>
+        </div>
+
+        <!-- Font Controls -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <select
+            (change)="onFontNameChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Font</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+          <select
+            (change)="onFontSizeChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="1">8pt</option>
+            <option value="2">10pt</option>
+            <option value="3" selected>12pt</option>
+            <option value="4">14pt</option>
+            <option value="5">18pt</option>
+            <option value="6">24pt</option>
+            <option value="7">36pt</option>
+          </select>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">text_format</span>
+            <input
+              type="color"
+              (change)="onTextColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Text Color"
+              value="#000000">
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">highlight</span>
+            <input
+              type="color"
+              (change)="onHighlightColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Highlight Color"
+              value="#ffff00">
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('justifyLeft')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Left">
+            <span class="material-icons text-base">format_align_left</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyCenter')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Center">
+            <span class="material-icons text-base">format_align_center</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyRight')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Right">
+            <span class="material-icons text-base">format_align_right</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyFull')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Justify">
+            <span class="material-icons text-base">format_align_justify</span>
+          </button>
+        </div>
+
+        <!-- Lists and Indent -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertList(false)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bullet List">
+            <span class="material-icons text-base">format_list_bulleted</span>
+          </button>
+          <button
+            (click)="insertList(true)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Numbered List">
+            <span class="material-icons text-base">format_list_numbered</span>
+          </button>
+          <button
+            (click)="executeCommand('indent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Indent">
+            <span class="material-icons text-base">format_indent_increase</span>
+          </button>
+          <button
+            (click)="executeCommand('outdent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Outdent">
+            <span class="material-icons text-base">format_indent_decrease</span>
+          </button>
+        </div>
+
+        <!-- Insert Tools -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertLink()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Link">
+            <span class="material-icons text-base">link</span>
+          </button>
+          <button
+            (click)="insertImage()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Image">
+            <span class="material-icons text-base">image</span>
+          </button>
+          <button
+            (click)="insertHorizontalRule()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Horizontal Line">
+            <span class="text-base font-mono">─</span>
+          </button>
+        </div>
+
+        <!-- Special Tools -->
+        <div class="flex">
+          <button
+            (click)="executeCommand('insertHTML', '<code></code>')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Code">
+            <span class="material-icons text-base">code</span>
+          </button>
+          <button
+            (click)="executeCommand('formatBlock', 'blockquote')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Quote">
+            <span class="material-icons text-base">format_quote</span>
+          </button>
+          <button
+            (click)="clearFormatting()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Clear Formatting">
+            <span class="material-icons text-base">format_clear</span>
+          </button>
+        </div>
+        
+      </div>
     </div>
+
+    <!-- Editor -->
+    <div
+      #editor
+      [contentEditable]="showToolbar"
+      (input)="handleInput($event)"
+      [class]="'min-h-64 p-4 ' + (showToolbar 
+        ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset cursor-text' 
+        : 'cursor-not-allowed bg-gray-50')"
+      style="min-height: 200px;"
+      [attr.data-placeholder]="showToolbar ? 'Start typing here...' : 'Enable toolbar to edit'">
+    </div>
+    
+  </div><div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-lg shadow-slate-200/50">
+            <!-- Toggle Button -->
+            <div class="flex justify-end bg-slate-100/80 px-4 py-2 border-b border-slate-200">
+                <button
+                (click)="toggleToolbar()"
+                class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-200 border border-slate-300 rounded-md transition-all shadow-sm">
+                <span class="material-icons text-base">{{ showToolbar ? 'visibility_off' : 'visibility' }}</span>
+                {{ showToolbar ? 'Hide Toolbar' : 'Show Toolbar' }}
+            </button>
+        </div>
+        
+        <!-- Toolbar -->
+    <div *ngIf="showToolbar" class="bg-white border-b border-gray-200 p-3">
+      <div class="flex flex-wrap gap-1">
+        
+          <!-- Undo/Redo -->
+          <div class="flex border-r border-gray-200 pr-2 mr-2">
+              <button
+              (click)="executeCommand('undo')"
+              class="p-2 hover:bg-gray-100 rounded transition-colors"
+              title="Undo">
+              <span class="material-icons text-base">undo</span>
+            </button>
+            <button
+            (click)="executeCommand('redo')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+        
+            title="Redo">
+            <span class="material-icons text-base">redo</span>
+          </button>
+        </div>
+
+        <!-- Text Formatting -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('bold')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bold">
+            <span class="material-icons text-base">format_bold</span>
+          </button>
+          <button
+            (click)="executeCommand('italic')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Italic">
+            <span class="material-icons text-base">format_italic</span>
+          </button>
+          <button
+            (click)="executeCommand('underline')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Underline">
+            <span class="material-icons text-base">format_underlined</span>
+          </button>
+          <button
+            (click)="executeCommand('strikeThrough')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Strikethrough">
+            <span class="material-icons text-base">strikethrough_s</span>
+          </button>
+          <button
+            (click)="executeCommand('subscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Subscript">
+            X₂
+          </button>
+          <button
+            (click)="executeCommand('superscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Superscript">
+            X²
+          </button>
+        </div>
+
+        <!-- Text Style -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center">
+          <select
+            (change)="onFormatBlockChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="h5">Heading 5</option>
+            <option value="h6">Heading 6</option>
+            <option value="p">Paragraph</option>
+            <option value="pre">Preformatted</option>
+            <option value="blockquote">Quote</option>
+          </select>
+        </div>
+
+        <!-- Font Controls -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <select
+            (change)="onFontNameChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Font</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+          <select
+            (change)="onFontSizeChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="1">8pt</option>
+            <option value="2">10pt</option>
+            <option value="3" selected>12pt</option>
+            <option value="4">14pt</option>
+            <option value="5">18pt</option>
+            <option value="6">24pt</option>
+            <option value="7">36pt</option>
+          </select>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">text_format</span>
+            <input
+              type="color"
+              (change)="onTextColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Text Color"
+              value="#000000">
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">highlight</span>
+            <input
+              type="color"
+              (change)="onHighlightColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Highlight Color"
+              value="#ffff00">
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('justifyLeft')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Left">
+            <span class="material-icons text-base">format_align_left</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyCenter')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Center">
+            <span class="material-icons text-base">format_align_center</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyRight')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Right">
+            <span class="material-icons text-base">format_align_right</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyFull')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Justify">
+            <span class="material-icons text-base">format_align_justify</span>
+          </button>
+        </div>
+
+        <!-- Lists and Indent -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertList(false)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bullet List">
+            <span class="material-icons text-base">format_list_bulleted</span>
+          </button>
+          <button
+            (click)="insertList(true)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Numbered List">
+            <span class="material-icons text-base">format_list_numbered</span>
+          </button>
+          <button
+            (click)="executeCommand('indent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Indent">
+            <span class="material-icons text-base">format_indent_increase</span>
+          </button>
+          <button
+            (click)="executeCommand('outdent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Outdent">
+            <span class="material-icons text-base">format_indent_decrease</span>
+          </button>
+        </div>
+
+        <!-- Insert Tools -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertLink()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Link">
+            <span class="material-icons text-base">link</span>
+          </button>
+          <button
+            (click)="insertImage()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Image">
+            <span class="material-icons text-base">image</span>
+          </button>
+          <button
+            (click)="insertHorizontalRule()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Horizontal Line">
+            <span class="text-base font-mono">─</span>
+          </button>
+        </div>
+
+        <!-- Special Tools -->
+        <div class="flex">
+          <button
+            (click)="executeCommand('insertHTML', '<code></code>')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Code">
+            <span class="material-icons text-base">code</span>
+          </button>
+          <button
+            (click)="executeCommand('formatBlock', 'blockquote')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Quote">
+            <span class="material-icons text-base">format_quote</span>
+          </button>
+          <button
+            (click)="clearFormatting()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Clear Formatting">
+            <span class="material-icons text-base">format_clear</span>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div
+      #editor
+      [contentEditable]="showToolbar"
+      (input)="handleInput($event)"
+      [class]="'min-h-64 p-4 ' + (showToolbar 
+        ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset cursor-text' 
+        : 'cursor-not-allowed bg-gray-50')"
+      style="min-height: 200px;"
+      [attr.data-placeholder]="showToolbar ? 'Start typing here...' : 'Enable toolbar to edit'">
+    </div>
+    
+  </div>
 </div>
+<div class="flex flex-col gap-1 mt-4 ">
+    <h1 class="text-xl font-bold text-slate-700 mb-3 pb-2 border-b border-slate-200" >Notes:</h1>
+    <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-lg shadow-slate-200/50">
+            <!-- Toggle Button -->
+            <div class="flex justify-end bg-slate-100/80 px-4 py-2 border-b border-slate-200">
+                <button
+                (click)="toggleToolbar()"
+                class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-200 border border-slate-300 rounded-md transition-all shadow-sm">
+                <span class="material-icons text-base">{{ showToolbar ? 'visibility_off' : 'visibility' }}</span>
+                {{ showToolbar ? 'Hide Toolbar' : 'Show Toolbar' }}
+            </button>
+        </div>
+        
+        <!-- Toolbar -->
+    <div *ngIf="showToolbar" class="bg-white border-b border-gray-200 p-3">
+      <div class="flex flex-wrap gap-1">
+        
+          <!-- Undo/Redo -->
+          <div class="flex border-r border-gray-200 pr-2 mr-2">
+              <button
+              (click)="executeCommand('undo')"
+              class="p-2 hover:bg-gray-100 rounded transition-colors"
+              title="Undo">
+              <span class="material-icons text-base">undo</span>
+            </button>
+            <button
+            (click)="executeCommand('redo')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+        
+            title="Redo">
+            <span class="material-icons text-base">redo</span>
+          </button>
+        </div>
+
+        <!-- Text Formatting -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('bold')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bold">
+            <span class="material-icons text-base">format_bold</span>
+          </button>
+          <button
+            (click)="executeCommand('italic')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Italic">
+            <span class="material-icons text-base">format_italic</span>
+          </button>
+          <button
+            (click)="executeCommand('underline')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Underline">
+            <span class="material-icons text-base">format_underlined</span>
+          </button>
+          <button
+            (click)="executeCommand('strikeThrough')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Strikethrough">
+            <span class="material-icons text-base">strikethrough_s</span>
+          </button>
+          <button
+            (click)="executeCommand('subscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Subscript">
+            X₂
+          </button>
+          <button
+            (click)="executeCommand('superscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Superscript">
+            X²
+          </button>
+        </div>
+
+        <!-- Text Style -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center">
+          <select
+            (change)="onFormatBlockChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="h5">Heading 5</option>
+            <option value="h6">Heading 6</option>
+            <option value="p">Paragraph</option>
+            <option value="pre">Preformatted</option>
+            <option value="blockquote">Quote</option>
+          </select>
+        </div>
+
+        <!-- Font Controls -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <select
+            (change)="onFontNameChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Font</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+          <select
+            (change)="onFontSizeChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="1">8pt</option>
+            <option value="2">10pt</option>
+            <option value="3" selected>12pt</option>
+            <option value="4">14pt</option>
+            <option value="5">18pt</option>
+            <option value="6">24pt</option>
+            <option value="7">36pt</option>
+          </select>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">text_format</span>
+            <input
+              type="color"
+              (change)="onTextColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Text Color"
+              value="#000000">
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">highlight</span>
+            <input
+              type="color"
+              (change)="onHighlightColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Highlight Color"
+              value="#ffff00">
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('justifyLeft')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Left">
+            <span class="material-icons text-base">format_align_left</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyCenter')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Center">
+            <span class="material-icons text-base">format_align_center</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyRight')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Right">
+            <span class="material-icons text-base">format_align_right</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyFull')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Justify">
+            <span class="material-icons text-base">format_align_justify</span>
+          </button>
+        </div>
+
+        <!-- Lists and Indent -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertList(false)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bullet List">
+            <span class="material-icons text-base">format_list_bulleted</span>
+          </button>
+          <button
+            (click)="insertList(true)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Numbered List">
+            <span class="material-icons text-base">format_list_numbered</span>
+          </button>
+          <button
+            (click)="executeCommand('indent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Indent">
+            <span class="material-icons text-base">format_indent_increase</span>
+          </button>
+          <button
+            (click)="executeCommand('outdent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Outdent">
+            <span class="material-icons text-base">format_indent_decrease</span>
+          </button>
+        </div>
+
+        <!-- Insert Tools -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertLink()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Link">
+            <span class="material-icons text-base">link</span>
+          </button>
+          <button
+            (click)="insertImage()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Image">
+            <span class="material-icons text-base">image</span>
+          </button>
+          <button
+            (click)="insertHorizontalRule()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Horizontal Line">
+            <span class="text-base font-mono">─</span>
+          </button>
+        </div>
+
+        <!-- Special Tools -->
+        <div class="flex">
+          <button
+            (click)="executeCommand('insertHTML', '<code></code>')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Code">
+            <span class="material-icons text-base">code</span>
+          </button>
+          <button
+            (click)="executeCommand('formatBlock', 'blockquote')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Quote">
+            <span class="material-icons text-base">format_quote</span>
+          </button>
+          <button
+            (click)="clearFormatting()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Clear Formatting">
+            <span class="material-icons text-base">format_clear</span>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div
+      #editor
+      [contentEditable]="showToolbar"
+      (input)="handleInput($event)"
+      [class]="'min-h-64 p-4 ' + (showToolbar 
+        ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset cursor-text' 
+        : 'cursor-not-allowed bg-gray-50')"
+      style="min-height: 200px;"
+      [attr.data-placeholder]="showToolbar ? 'Start typing here...' : 'Enable toolbar to edit'">
+    </div>
+    
+  </div>
+</div>
+<div class="flex flex-col gap-1 mt-4">
+   <h1 class="text-xl font-bold text-slate-700 mb-3 pb-2 border-b border-slate-200" >CONCLUDING REMARK:</h1>
+    <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-lg shadow-slate-200/50">
+            <!-- Toggle Button -->
+            <div class="flex justify-end bg-slate-100/80 px-4 py-2 border-b border-slate-200">
+                <button
+                (click)="toggleToolbar()"
+                class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-200 border border-slate-300 rounded-md transition-all shadow-sm">
+                <span class="material-icons text-base">{{ showToolbar ? 'visibility_off' : 'visibility' }}</span>
+                {{ showToolbar ? 'Hide Toolbar' : 'Show Toolbar' }}
+            </button>
+        </div>
+        
+        <!-- Toolbar -->
+    <div *ngIf="showToolbar" class="bg-white border-b border-gray-200 p-3">
+      <div class="flex flex-wrap gap-1">
+        
+          <!-- Undo/Redo -->
+          <div class="flex border-r border-gray-200 pr-2 mr-2">
+              <button
+              (click)="executeCommand('undo')"
+              class="p-2 hover:bg-gray-100 rounded transition-colors"
+              title="Undo">
+              <span class="material-icons text-base">undo</span>
+            </button>
+            <button
+            (click)="executeCommand('redo')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+        
+            title="Redo">
+            <span class="material-icons text-base">redo</span>
+          </button>
+        </div>
+
+        <!-- Text Formatting -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('bold')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bold">
+            <span class="material-icons text-base">format_bold</span>
+          </button>
+          <button
+            (click)="executeCommand('italic')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Italic">
+            <span class="material-icons text-base">format_italic</span>
+          </button>
+          <button
+            (click)="executeCommand('underline')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Underline">
+            <span class="material-icons text-base">format_underlined</span>
+          </button>
+          <button
+            (click)="executeCommand('strikeThrough')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Strikethrough">
+            <span class="material-icons text-base">strikethrough_s</span>
+          </button>
+          <button
+            (click)="executeCommand('subscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Subscript">
+            X₂
+          </button>
+          <button
+            (click)="executeCommand('superscript')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors text-xs font-mono"
+            title="Superscript">
+            X²
+          </button>
+        </div>
+
+        <!-- Text Style -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center">
+          <select
+            (change)="onFormatBlockChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="h5">Heading 5</option>
+            <option value="h6">Heading 6</option>
+            <option value="p">Paragraph</option>
+            <option value="pre">Preformatted</option>
+            <option value="blockquote">Quote</option>
+          </select>
+        </div>
+
+        <!-- Font Controls -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <select
+            (change)="onFontNameChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="">Font</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+          <select
+            (change)="onFontSizeChange($event)"
+            class="px-2 py-1 border border-gray-300 rounded text-sm hover:border-gray-400 focus:outline-none focus:border-blue-500">
+            <option value="1">8pt</option>
+            <option value="2">10pt</option>
+            <option value="3" selected>12pt</option>
+            <option value="4">14pt</option>
+            <option value="5">18pt</option>
+            <option value="6">24pt</option>
+            <option value="7">36pt</option>
+          </select>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2 items-center gap-1">
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">text_format</span>
+            <input
+              type="color"
+              (change)="onTextColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Text Color"
+              value="#000000">
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-sm mr-1">highlight</span>
+            <input
+              type="color"
+              (change)="onHighlightColorChange($event)"
+              class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+              title="Highlight Color"
+              value="#ffff00">
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="executeCommand('justifyLeft')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Left">
+            <span class="material-icons text-base">format_align_left</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyCenter')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Center">
+            <span class="material-icons text-base">format_align_center</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyRight')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Align Right">
+            <span class="material-icons text-base">format_align_right</span>
+          </button>
+          <button
+            (click)="executeCommand('justifyFull')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Justify">
+            <span class="material-icons text-base">format_align_justify</span>
+          </button>
+        </div>
+
+        <!-- Lists and Indent -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertList(false)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Bullet List">
+            <span class="material-icons text-base">format_list_bulleted</span>
+          </button>
+          <button
+            (click)="insertList(true)"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Numbered List">
+            <span class="material-icons text-base">format_list_numbered</span>
+          </button>
+          <button
+            (click)="executeCommand('indent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Indent">
+            <span class="material-icons text-base">format_indent_increase</span>
+          </button>
+          <button
+            (click)="executeCommand('outdent')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Outdent">
+            <span class="material-icons text-base">format_indent_decrease</span>
+          </button>
+        </div>
+
+        <!-- Insert Tools -->
+        <div class="flex border-r border-gray-200 pr-2 mr-2">
+          <button
+            (click)="insertLink()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Link">
+            <span class="material-icons text-base">link</span>
+          </button>
+          <button
+            (click)="insertImage()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Image">
+            <span class="material-icons text-base">image</span>
+          </button>
+          <button
+            (click)="insertHorizontalRule()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Insert Horizontal Line">
+            <span class="text-base font-mono">─</span>
+          </button>
+        </div>
+
+        <!-- Special Tools -->
+        <div class="flex">
+          <button
+            (click)="executeCommand('insertHTML', '<code></code>')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Code">
+            <span class="material-icons text-base">code</span>
+          </button>
+          <button
+            (click)="executeCommand('formatBlock', 'blockquote')"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Quote">
+            <span class="material-icons text-base">format_quote</span>
+          </button>
+          <button
+            (click)="clearFormatting()"
+            class="p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Clear Formatting">
+            <span class="material-icons text-base">format_clear</span>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div
+      #editor
+      [contentEditable]="showToolbar"
+      (input)="handleInput($event)"
+      [class]="'min-h-64 p-4 ' + (showToolbar 
+        ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset cursor-text' 
+        : 'cursor-not-allowed bg-gray-50')"
+      style="min-height: 200px;"
+      [attr.data-placeholder]="showToolbar ? 'Start typing here...' : 'Enable toolbar to edit'">
+    </div>
+    
+  </div>
+</div>
+</div>
+

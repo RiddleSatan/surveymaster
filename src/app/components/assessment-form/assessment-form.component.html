@@ -1,56 +1,67 @@
-  <div class="page-wrapper">
+
+
+<div class="page-wrapper">
   <div class="page-container">
-    
     <div class="grid-container">
       
+      <!-- Left Column - Estimate Details -->
       <div class="card estimate-details-card">
-        <h2 class="card-header">
-          ESTIMATE DETAILS
-        </h2>
+        <h2 class="card-header">ESTIMATE DETAILS</h2>
         
         <div class="form-body">
-          <div class="form-row">
-            <label for="totalParts" class="form-label">Total Parts</label>
-            <input type="number" id="totalParts" [(ngModel)]="totalParts" class="form-input">
+          <!-- Description and Amount columns for left side -->
+          <div class="estimate-header-row">
+            <div class="estimate-header">Description</div>
+            <div class="estimate-header">Amount</div>
           </div>
 
-          <div class="form-row">
+          <div class="form-row estimate-row">
+            <label class="form-label">Total Est. Parts</label>
+            <input type="number" [(ngModel)]="totalParts" class="form-input estimate-input">
+          </div>
+
+          <div class="form-row estimate-row">
             <label class="form-label">Paint Material (25%)</label>
-            <input type="number" [value]="paintMaterial()" disabled class="form-input">
+            <input type="number" [value]="paintMaterial().toFixed(2)" disabled class="form-input estimate-input">
           </div>
 
-          <div class="form-row">
+          <div class="form-row estimate-row">
+            <label class="form-label">Accidental Labour</label>
+            <input type="number" [(ngModel)]="accidentalLabour" class="form-input estimate-input">
+          </div>
+
+          <div class="form-row estimate-row">
             <label class="form-label">Paint Labour (75%)</label>
-            <input type="number" id="paintLabour" [(ngModel)]="paintLabour" class="form-input">
-          </div>
-
-          <div class="form-row">
-            <label for="accidentalLabour" class="form-label">Accidental Labour</label>
-            <input type="number" id="accidentalLabour" [(ngModel)]="accidentalLabour" class="form-input">
-          </div>
-
-          <div class="form-row summary-row">
-            <label class="summary-label">SUB TOTAL</label>
-            <div class="summary-value">{{ subTotal().toFixed(2) }}</div>
-          </div>
-
-          <div class="form-row">
-            <label for="otherEstimates" class="form-label">Other Estimates</label>
-            <input type="number" id="otherEstimates" [(ngModel)]="otherEstimates" class="form-input">
-          </div>
-
-          <div class="form-row">
-            <label for="towingCharges" class="form-label">Towing Charges</label>
-            <input type="number" id="towingChargesEstimate" [(ngModel)]="towingChargesEstimate" class="form-input">
+            <input type="number" [(ngModel)]="paintLabour" class="form-input estimate-input">
           </div>
 
           <div class="form-row summary-row total">
             <label class="summary-label">TOTAL ESTIMATE</label>
-            <div class="summary-value">{{ totalEstimate().toFixed(2) }}</div>
+            <div class="summary-value estimate-total">{{ totalEstimate().toFixed(2) }}</div>
+          </div>
+
+          <div class="form-row estimate-row towing">
+            <label class="form-label">Towing Charges</label>
+            <input type="number" [(ngModel)]="towingChargesEstimate" class="form-input estimate-input">
+          </div>
+
+          <div class="placeholder-value">XXXXXXX.XX</div>
+
+          <!-- Cashless Toggle for Left Side -->
+          <div class="cashless-toggle-left">
+            <span class="cashless-label-left">Cashless ?</span>
+            <label class="toggle-switch">
+              <input type="checkbox" [(ngModel)]="isCashless" class="peer">
+              <div class="slider"></div>
+            </label>
+            <span class="toggle-status" [class.text-green-600]="isCashless()" [class.text-gray-500]="!isCashless()">
+              {{ isCashless() ? 'Yes' : 'No' }}
+            </span>
           </div>
         </div>
       </div>
 
+      <!-- Right Column - Assessment Summary -->
       <div class="card assessment-summary-card">
         <h2 class="card-header summary">ASSESSMENT SUMMARY</h2>
         
@@ -65,96 +76,112 @@
           </span>
         </div>
 
+        <!-- Assessment Details Table -->
         <div class="table-container">
-          <table class="summary-table">
+          <table class="assessment-table">
             <thead>
               <tr>
                 <th>Description</th>
-                <th class="text-right">Amount</th>
-                <th class="text-right">Dep</th>
-                <th class="text-right">GST</th>
+                <th class="text-right">Gross Allowed</th>
+                <th class="text-right">Depreciation</th>
+                <th class="text-right">Actual Allowed</th>
+                <th class="text-right">Applied GST</th>
+                <th class="text-right">Assessed</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Total Parts Allowed [A]</td>
-                <td class="text-right font-mono">{{ totalPartsAllowedA().toFixed(2) }}</td>
-                <td class="text-right font-mono">{{ totalPartsAllowedA() > 0 ? '41.60' : '0.00' }}</td>
-                <td class="text-right font-mono">{{ gstOnParts().toFixed(2) }}</td>
-              </tr>
-              <tr>
-                <td>Painting (As part)</td>
-                <td class="text-right font-mono">0.00</td>
-                <td class="text-right font-mono">0.00</td>
-                <td class="text-right font-mono">0.00</td>
-              </tr>
-              <tr>
-                <td>Total Labour Allowed [B]</td>
-                <td class="text-right font-mono">{{ totalLabourAllowedB().toFixed(2) }}</td>
-                <td class="text-right font-mono">0.00</td>
-                <td class="text-right font-mono">0.00</td>
-              </tr>
-              <tr>
-                <td class="align-middle">Towing Charges</td>
-                <td class="text-right">
-                  <input type="number" [(ngModel)]="towingChargesAssessed" class="table-input">
-                </td>
-                <td class="text-right font-mono">0.00</td>
-                <td></td>
-              </tr>
-              <tr class="table-footer">
-                <td>Gross Loss Assessed</td>
-                <td class="text-right font-mono">{{ grossLossAssessed().toFixed(2) }}</td>
-                <td class="text-right font-mono">{{ totalPartsAllowedA() > 0 ? '286.87' : '0.00' }}</td>
-                <td class="text-right font-mono">{{ totalGst().toFixed(2) }}</td>
+              <tr *ngFor="let row of assessmentTableData; let i = index">
+                <td>{{ row.description }}</td>
+                <td class="text-right font-mono">{{ row.grossAllowed }}</td>
+                <td class="text-right font-mono depreciation-value">{{ row.depreciation }}</td>
+                <td class="text-right font-mono actual-allowed-value">{{ row.actualAllowed }}</td>
+                <td class="text-right font-mono applied-gst-value">{{ row.appliedGst }}</td>
+                <td class="text-right font-mono assessed-value">{{ row.assessed }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
+        <!-- Deductions Section -->
         <div class="deductions-section">
-          <div class="deduction-row">
-            <label class="deduction-label">Salvage Charges</label>
-            <div class="input-group">
-              <input type="number" [(ngModel)]="salvageChargesValue" class="deduction-input">
-              <button class="btn-less">Less</button>
-              <input type="number" [(ngModel)]="salvageChargesPercent" class="deduction-input short">
-              <span class="input-suffix">% (Of metal parts)</span>
+          <div class="deduction-row salvage-row">
+            <div class="deduction-left">
+              <span class="deduction-less">Less</span>
+              <span class="deduction-percent">{{ salvageChargesPercent().toFixed(2) }}%</span>
+              <span class="deduction-remark">Remark: only for metal parts</span>
+            </div>
+            <div class="deduction-right">
+              <span class="deduction-label">Salvage Charges</span>
+              <span class="deduction-value">{{ salvageChargesValue().toFixed(2) }}</span>
             </div>
           </div>
-          <div class="deduction-row">
-            <label class="deduction-label">Average Clause if any?</label>
-            <div class="input-group">
-              <input type="number" [(ngModel)]="averageClauseValue" class="deduction-input">
-              <button class="btn-less">Less</button>
-              <input type="number" [(ngModel)]="averageClausePercent" class="deduction-input short">
-              <span class="input-suffix">% (Of the assesment)</span>
+
+          <div class="sub-total-row">
+            <span class="sub-total-label">Sub Total</span>
+            <span class="sub-total-value">XXAAAAA.00</span>
+          </div>
+
+          <div class="deduction-row average-row">
+            <div class="deduction-left">
+              <span class="deduction-less">Less</span>
+              <span class="deduction-percent">{{ averageClausePercent().toFixed(2) }}%</span>
+              <span class="deduction-remark">Remark: of the assessment</span>
+            </div>
+            <div class="deduction-right">
+              <span class="deduction-label">Average Clause if any?</span>
+              <span class="deduction-value">{{ averageClauseValue().toFixed(2) }}</span>
             </div>
           </div>
-          <div class="deduction-row">
-            <label class="deduction-label">Compulsory Excess Clause</label>
-            <div class="input-group">
-              <input type="number" [(ngModel)]="compulsoryExcessClause" class="deduction-input">
-              <span class="policy-label">Policy Type ?</span>
+
+          <div class="deduction-row excess-row">
+            <div class="deduction-left">
               <button class="btn-policy">Zero Dep Policy</button>
+              <span class="policy-question">Policy Type ?</span>
+            </div>
+            <div class="deduction-right">
+              <span class="deduction-label">Compulsory Excess Clause</span>
+              <span class="deduction-value">{{ compulsoryExcessClause().toFixed(2) }}</span>
             </div>
           </div>
-          <div class="deduction-row">
-            <label class="deduction-label">Other Deductibles any?</label>
-            <input type="number" [(ngModel)]="otherDeductibles" class="deduction-input ml-auto">
+
+          <div class="deduction-row voluntary-row">
+            <div class="deduction-right">
+              <span class="deduction-label">Voluntary / Imposed Excess?</span>
+              <span class="deduction-value">{{ otherDeductibles().toFixed(2) }}</span>
+            </div>
           </div>
         </div>
 
+        <!-- Loss Assessed Section -->
+        <div class="loss-assessed-section">
+          <div class="loss-row">
+            <span class="loss-label">LOSS ASSESSED?</span>
+            <span class="loss-value">{{ netLossAssessed().toFixed(2) }}</span>
+          </div>
+          <div class="towing-row">
+            <span class="towing-label">Towing Charges</span>
+            <span class="towing-value">{{ towingChargesAssessed().toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Net Loss Calculation -->
         <div class="net-loss-container">
           <h3 class="net-loss-title">NET LOSS ASSESSED?</h3>
-          <div class="net-loss-value">{{ grossLossAssessed().toFixed(2) }}</div>
-          <div class="operator">+</div>
-          <div class="net-loss-value">{{ totalDeductibles().toFixed(2) }}</div>
-          <div class="operator">=</div>
-          <div class="net-loss-total">{{ netLossAssessed().toFixed(2) }}</div>
+          <div class="net-calculation">
+            <div class="net-loss-value">{{ netLossAssessed().toFixed(2) }}</div>
+            <div class="operator">+</div>
+            <div class="net-loss-value">{{ totalDeductibles().toFixed(2) }}</div>
+            <div class="operator">=</div>
+            <div class="net-loss-total">{{ netLossAssessed().toFixed(2) }}</div>
+          </div>
         </div>
       </div>
       
+    </div>
+
+    <!-- Debug Button (Optional) -->
+    <div class="debug-section">
+      <button (click)="logDataAsJson()" class="debug-btn">Log Form Data as JSON</button>
     </div>
   </div>
 </div>

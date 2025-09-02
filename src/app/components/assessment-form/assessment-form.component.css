@@ -1,10 +1,13 @@
+/* FILE: src/app/assessment-form/assessment-form.component.css */
+
 /* General Setup & Variables */
 :root {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --color-red-100: #fee2e2;
   --color-red-400: #f87171;
   --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
@@ -18,37 +21,36 @@
   --color-green-500: #22c55e;
   --color-green-600: #16a34a;
   --color-blue-100: #dbeafe;
+  --color-blue-600: #2563eb;
   --color-blue-800: #1e40af;
   --color-amber-100: #fef3c7;
   --color-amber-300: #fcd34d;
+  --color-yellow-100: #fef3c7;
 }
 
 /* Page Layout */
 .page-wrapper {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 1rem;
 }
+
 .page-container {
   background-color: #f0fdf4;
-  height: fit-content;
-  width: fit-content;
-  padding: 1rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1400px;
+  padding: 2rem;
   font-family: var(--font-sans);
   color: var(--color-gray-700);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
+
 .grid-container {
-  width: 100%;
-  max-width: 80rem; /* max-w-7xl */
-  margin-left: auto;
-  margin-right: auto;
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: 1fr 2fr;
   gap: 2rem;
   align-items: flex-start;
 }
@@ -57,10 +59,11 @@
 .card {
   background-color: var(--color-yellow-100);
   padding: 1.5rem;
-  border-radius: 0.75rem; /* rounded-xl */
+  border-radius: 0.75rem;
   border: 1px solid var(--color-gray-200);
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* shadow-lg */
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 }
+
 .card-header {
   font-size: 0.875rem;
   font-weight: 700;
@@ -71,110 +74,115 @@
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
 }
+
 .card-header.summary {
   font-size: 1.125rem;
   text-align: center;
-  margin-bottom: 1rem;
 }
 
-/* Form Elements */
-.form-body > :not([hidden]) ~ :not([hidden]) {
-  margin-top: 1rem; /* space-y-4 */
-}
-.form-row {
+/* Left Column - Estimate Details Styling */
+.estimate-header-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+}
+
+.estimate-header {
+  text-align: center;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.estimate-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 0.5rem;
 }
-.form-label {
-  font-size: 0.875rem;
-  color: var(--color-gray-600);
-}
-.form-input {
-  width: 100%;
-  text-align: right;
+
+.estimate-input {
+  text-align: center;
   padding: 0.5rem;
   border: 1px solid var(--color-gray-300);
   border-radius: 0.375rem;
   background-color: #fff;
-  transition: all 0.2s ease-in-out;
-}
-.form-input:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-color: var(--color-red-400);
-  box-shadow: 0 0 0 2px var(--tw-ring-color);
-  border-color: var(--color-red-400);
-}
-.form-input:disabled {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-500);
-  cursor: not-allowed;
-}
-
-/* Summary Rows in Form */
-.summary-row {
-  font-weight: 700;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-gray-200);
-  margin-top: 0.75rem;
-}
-.summary-row.total {
-  border-top-width: 2px;
-  border-top-color: var(--color-gray-300);
-}
-.summary-label {
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  color: var(--color-gray-800);
-}
-.summary-row.total .summary-label {
-  letter-spacing: 0.025em;
-}
-.summary-value {
-  width: 100%;
-  text-align: right;
-  padding: 0.5rem;
-  background-color: var(--color-gray-200);
-  border-radius: 0.375rem;
-  border: 1px solid var(--color-gray-300);
-  color: #000;
   font-family: var(--font-mono);
 }
 
-/* Toggle Switch */
+.estimate-total {
+  background-color: var(--color-red-100);
+  color: var(--color-red-600);
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-family: var(--font-mono);
+}
+
+.placeholder-value {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  color: var(--color-gray-500);
+  margin: 1rem 0;
+}
+
+/* Left Side Cashless Toggle */
+.cashless-toggle-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.cashless-label-left {
+  font-weight: 600;
+  color: var(--color-red-500);
+  font-size: 0.875rem;
+}
+
+/* Right Column - Assessment Summary */
 .cashless-toggle {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
 .cashless-label {
   font-weight: 600;
   color: var(--color-gray-700);
 }
+
+/* Toggle Switch Styling */
 .toggle-switch {
   position: relative;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
 }
-.peer { /* Hidden checkbox */
+
+.peer {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 .slider {
-  width: 2.75rem; /* w-11 */
-  height: 1.5rem; /* h-6 */
+  width: 2.75rem;
+  height: 1.5rem;
   background-color: var(--color-gray-300);
   border-radius: 9999px;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition: all 0.3s;
+  position: relative;
 }
+
 .slider::after {
   content: '';
   position: absolute;
@@ -183,131 +191,163 @@
   background-color: white;
   border: 1px solid transparent;
   border-radius: 9999px;
-  height: 1.25rem; /* h-5 */
-  width: 1.25rem; /* w-5 */
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  height: 1.25rem;
+  width: 1.25rem;
+  transition: all 0.3s;
 }
+
 .peer:checked + .slider {
-  background-color: var(--color-green-500);
+  background-color: var(--color-blue-600);
 }
+
 .peer:checked + .slider::after {
   transform: translateX(100%);
 }
+
 .toggle-status {
   font-weight: 600;
   font-size: 0.875rem;
 }
 
-/* Table */
+/* Assessment Table */
 .table-container {
   overflow-x: auto;
   margin-bottom: 1.5rem;
 }
-.summary-table {
+
+.assessment-table {
   width: 100%;
   font-size: 0.875rem;
-  text-align: left;
   border-collapse: collapse;
+  background-color: white;
 }
-.summary-table thead {
+
+.assessment-table thead {
   background-color: var(--color-gray-100);
 }
-.summary-table th {
+
+.assessment-table th {
   padding: 0.75rem;
   font-weight: 600;
   color: var(--color-gray-600);
-  border-bottom: 2px solid var(--color-gray-200);
+  border: 1px solid var(--color-gray-300);
   text-transform: uppercase;
   font-size: 0.75rem;
 }
-.summary-table td {
+
+.assessment-table td {
   padding: 0.75rem;
-  border-bottom: 1px solid var(--color-gray-200);
-}
-.summary-table tbody tr:hover {
-  background-color: var(--color-gray-50);
-}
-.table-footer {
-  background-color: var(--color-gray-100);
-  font-weight: 700;
-}
-.table-footer td:first-child {
-  color: var(--color-gray-800);
-}
-.table-footer td {
-  color: #000;
-}
-.table-input {
-  width: 6rem; /* w-24 */
-  padding: 0.25rem;
   border: 1px solid var(--color-gray-300);
-  border-radius: 0.375rem;
-  text-align: right;
   background-color: white;
 }
-.table-input:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-color: var(--color-red-400);
-  box-shadow: 0 0 0 1px var(--tw-ring-color);
+
+.assessment-table tbody tr:hover {
+  background-color: var(--color-gray-50);
+}
+
+/* Specific column styling for assessment table */
+.depreciation-value {
+  color: var(--color-red-600);
+  font-weight: 600;
+}
+
+.actual-allowed-value {
+  color: var(--color-blue-600);
+  font-weight: 600;
+}
+
+.applied-gst-value {
+  color: var(--color-red-600);
+  font-weight: 600;
+}
+
+.assessed-value {
+  font-weight: bold;
+  color: black;
 }
 
 /* Deductions Section */
 .deductions-section {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
   font-size: 0.875rem;
 }
-.deductions-section > :not([hidden]) ~ :not([hidden]) {
-  margin-top: 0.75rem; /* space-y-3 */
-}
+
 .deduction-row {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
 }
-.deduction-label {
-  color: var(--color-gray-700);
-}
-.input-group {
+
+.deduction-left {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: flex-start;
 }
-.deduction-input {
-  padding: 0.5rem;
-  border: 1px solid var(--color-gray-300);
-  border-radius: 0.375rem;
-  width: 6rem;
+
+.deduction-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   text-align: right;
-  background-color: #fff;
 }
-.deduction-input.short { width: 4rem; }
-.deduction-input:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-color: var(--color-red-400);
-  box-shadow: 0 0 0 1px var(--tw-ring-color);
-}
-.btn-less {
-  padding: 0.25rem 0.75rem;
-  background-color: var(--color-gray-200);
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-  transition: background-color 0.2s;
-  border: none;
-  cursor: pointer;
-}
-.btn-less:hover { background-color: var(--color-gray-300); }
-.input-suffix { color: var(--color-gray-500); }
-.policy-label {
+
+.deduction-less {
+  background-color: var(--color-red-100);
+  color: var(--color-red-600);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-gray-600);
 }
+
+.deduction-percent {
+  color: var(--color-red-600);
+  font-weight: 600;
+}
+
+.deduction-remark {
+  color: var(--color-red-600);
+  font-size: 0.75rem;
+}
+
+.deduction-label {
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+.deduction-value {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-gray-300);
+}
+
+.sub-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background-color: var(--color-gray-100);
+  border-radius: 0.375rem;
+}
+
+.sub-total-label {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sub-total-value {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  color: black;
+}
+
 .btn-policy {
   padding: 0.5rem 1rem;
   font-size: 0.75rem;
@@ -315,71 +355,206 @@
   color: var(--color-blue-800);
   border-radius: 9999px;
   font-weight: 600;
-  transition-property: all;
   border: none;
   cursor: pointer;
+}
+
+.policy-question {
+  font-size: 0.75rem;
+  color: var(--color-gray-600);
+  margin-left: 0.5rem;
+}
+
+/* Loss Assessed Section */
+.loss-assessed-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-gray-300);
+}
+
+.loss-row, .towing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.loss-label, .towing-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--color-gray-700);
+}
+
+.loss-value, .towing-value {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: black;
 }
 
 /* Net Loss Section */
 .net-loss-container {
   margin-top: 2rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: var(--color-gray-100);
   border-radius: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   border: 1px solid var(--color-gray-200);
+  text-align: center;
 }
+
 .net-loss-title {
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-gray-800);
   text-transform: uppercase;
+  margin-bottom: 1rem;
 }
+
+.net-calculation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .net-loss-value {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   background-color: var(--color-green-100);
   border-radius: 0.375rem;
   font-family: var(--font-mono);
   font-size: 1.125rem;
   border: 1px solid var(--color-green-300);
-  color: #000;
+  color: black;
+  font-weight: 600;
 }
+
 .operator {
   font-weight: 700;
   color: var(--color-gray-600);
-  font-size: 1.125rem;
+  font-size: 1.5rem;
 }
+
 .net-loss-total {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   background-color: var(--color-amber-100);
-  color: #000;
+  color: black;
   border-radius: 0.375rem;
   font-family: var(--font-mono);
   font-size: 1.5rem;
+  font-weight: bold;
   border: 1px solid var(--color-amber-300);
 }
 
-/* Responsive Styles */
-@media (min-width: 640px) { /* sm: */
-  .page-container { padding: 2rem; }
-  .deduction-row { grid-template-columns: 1fr auto; }
-  .input-group { justify-content: flex-end; }
-  .deduction-input.ml-auto { margin-left: auto; }
-  .net-loss-container { gap: 1rem; }
+/* Debug Section */
+.debug-section {
+  margin-top: 2rem;
+  text-align: center;
 }
-@media (min-width: 1024px) { /* lg: */
-  .grid-container { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .estimate-details-card { grid-column: span 1 / span 1; }
-  .assessment-summary-card { grid-column: span 2 / span 2; }
+
+.debug-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-blue-600);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.debug-btn:hover {
+  background-color: var(--color-blue-700);
 }
 
 /* Utility Classes */
-.font-mono { font-family: var(--font-mono); }
-.text-right { text-align: right; }
-.align-middle { vertical-align: middle; }
-.text-green-600 { color: var(--color-green-600); }
-.text-gray-500 { color: var(--color-gray-500); }
+.font-mono { 
+  font-family: var(--font-mono); 
+}
+
+.text-right { 
+  text-align: right; 
+}
+
+.text-green-600 { 
+  color: var(--color-green-600); 
+}
+
+.text-gray-500 { 
+  color: var(--color-gray-500); 
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .page-container {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .net-calculation {
+    flex-direction: column;
+  }
+  
+  .estimate-header-row,
+  .estimate-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .deduction-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+
+/* .card {
+    width: 100%;
+    max-width: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+} */
+
+/* Styles for the row using your classes */
+.form-row.summary-row.total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem; /* Adds space between label and value */
+}
+
+/* "Total Estimate" Label - Adjusted for size and weight */
+.summary-label {
+    font-weight: 500; /* Regular weight */
+    color: #374151; /* text-gray-700 */
+    flex-shrink: 0; /* Prevents the label from shrinking */
+}
+
+/* The numeric value - Now has the background and adjusted size */
+.summary-value.estimate-total {
+    font-weight: 700; /* Bold */
+    font-size: 1.125rem; /* text-lg, smaller than before */
+    line-height: 1.75rem;
+    color: #111827; /* text-gray-900 */
+    background-color: #fce7f3; /* bg-pink-100 */
+    padding: 0.5rem 0.75rem; /* p-2 px-3 */
+    border-radius: 0.5rem; /* rounded-lg */
+    text-align: center;
+    width: 13.7rem; /* Takes up available width in the column */
+    
+}
+
+.towing{
+  margin-top: 0.5rem;
+}
